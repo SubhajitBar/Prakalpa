@@ -74,15 +74,15 @@ export const enrollmentVerification = catchAsyncError(async (req, res, next) => 
     }};
     await user.save();
 
-    // res.redirect(
-    //     `${process.env.FRONTEND_URL}/enrollmentsuccess`
-    //   );
+    res.redirect(
+        `${process.env.FRONTEND_URL}/enrollmentsuccess`
+      );
 
-    res.status(200).json({
-        success: true,
-        message: `Your enrollment is: ${user.enrollmentStatus}`
+    // res.status(200).json({
+    //     success: true,
+    //     message: `Your enrollment is: ${user.enrollmentStatus}`
 
-    });
+    // });
 
 });
 
