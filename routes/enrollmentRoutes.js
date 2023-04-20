@@ -1,12 +1,13 @@
 import express from "express";
 import { authorizeAdmin, isAuthenticated } from "../middlewares/auth.js";
-import { cancelEnrollment, createEnrollment, deleteEnrollmentIds, enrollmentVerification, getAllEnrolledStudents, getAllEnrollmentIds } from "../controllers/enrollmentController.js";
+import { cancelEnrollment, createEnrollment, deleteEnrollmentIds, enrollMe, enrollmentVerification, getAllEnrolledStudents, getAllEnrollmentIds } from "../controllers/enrollmentController.js";
 
 
 const router  = express.Router();
 
 // enrollment verify
 router.route("/enrollmentverification").post(isAuthenticated, enrollmentVerification);
+router.route("/enrollme/:id").get(isAuthenticated, enrollMe);
 
 
 // admin routes

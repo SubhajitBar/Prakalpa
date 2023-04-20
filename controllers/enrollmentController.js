@@ -56,6 +56,9 @@ export const deleteEnrollmentIds = catchAsyncError(async (req, res, next) => {
 
 });
 
+
+
+
 export const enrollmentVerification = catchAsyncError(async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
@@ -85,6 +88,29 @@ export const enrollmentVerification = catchAsyncError(async (req, res, next) => 
     // });
 
 });
+
+export const enrollMe = catchAsyncError(async(req,res,next)=>{
+
+
+    const user = await User.findById(req.user._id);
+
+    if (user.role === "admin")
+      return next(new ErrorHandler("Admin can't buy subscription", 400));
+  
+
+    const course = await Course.findById(req.params.id);
+    if (!course) return next(new ErrorHandler("Project not found", 404));
+
+    res.status(200).json({
+        success: true,
+        description: course.description,
+    })
+    
+
+})
+
+
+
 
 export const cancelEnrollment = catchAsyncError(async (req, res, next) => {
 
