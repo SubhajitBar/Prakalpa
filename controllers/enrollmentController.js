@@ -1,6 +1,7 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import { User } from "../models/User.js";
-import { Enrollment } from "../models/Enrollment.js"
+import { Enrollment } from "../models/Enrollment.js";
+import {Course} from "../models/Course.js";
 import ErrorHandler from "../utils/errorHandler.js";
 
 
