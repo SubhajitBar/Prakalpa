@@ -104,8 +104,10 @@ export const enrollMe = catchAsyncError(async(req,res,next)=>{
 
     res.status(200).json({
         success: true,
-        title: course.title,
-        description: course.description,
+        desc:[{
+            title: course.title,
+            description: course.description,
+        }]
     })
     
 
