@@ -99,17 +99,13 @@ export const enrollMe = catchAsyncError(async(req,res,next)=>{
       return next(new ErrorHandler("Admin can't buy subscription", 400));
   
 
-    const course = await Course.findById(req.params.id);
+    const course = await Course.findById(req.params.id).select("-lectures");
     if (!course) return next(new ErrorHandler("Project not found", 404));
 
     res.status(200).json({
         success: true,
-        desc:[{
-            title: course.title,
-            description: course.description,
-        }]
+        course,
     })
-    
 
 })
 
