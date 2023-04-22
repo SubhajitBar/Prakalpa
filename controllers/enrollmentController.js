@@ -92,7 +92,7 @@ export const enrollmentVerification = catchAsyncError(async (req, res, next) => 
 
     res.redirect(
         `${process.env.FRONTEND_URL}/project/${user.enrolledProjectId}`
-      );
+    );
 
     res.status(200).json({
         success: true,
