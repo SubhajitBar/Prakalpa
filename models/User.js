@@ -26,6 +26,11 @@ const schema = new mongoose.Schema({
         default: undefined,
 
     },
+    enrolledProjectId: {
+        type: String,
+        default: undefined,
+
+    },
 
     password: {
         type: String,

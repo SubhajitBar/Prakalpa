@@ -63,40 +63,53 @@ export const deleteEnrollmentIds = catchAsyncError(async (req, res, next) => {
 export const enrollmentVerification = catchAsyncError(async (req, res, next) => {
 
     const user = await User.findById(req.user._id);
+    const project = await Course.findById(req.params.id);
+
     if (user.role === "admin")
-        return next(new ErrorHandler("Admin can't enroll", 400));
+      return next(new ErrorHandler("Admin can't buy subscription", 400));
+
+    if (!project)
+    return next(new ErrorHandler("Project not found", 404));
+
 
     const regId = await user.enrollmentId;
-    const enroll = await Enrollment.findOne({ regId });
-    if(!enroll) return next(new ErrorHandler("Invalid Registration Id",404));
-    if( user.enrollmentStatus === "active") return next(new ErrorHandler("You have already enrolled",400));
+    const verify = await Enrollment.findOne({ regId });
+    if(!verify) return next(new ErrorHandler("Invalid Registration Id",404));
+
+    if( user.enrollmentStatus === "active" && user.enrolledProjectId !== project.id) return next(new ErrorHandler("You have already enrolled for another project",400));
     else{
-    const EnrollmentID = enroll.regId;
-    if (regId === EnrollmentID) {
+
+    const verifiedID = await verify.regId;   
+    const projectID = await project.id;
+   
+    if (regId === verifiedID) {
         user.enrollmentStatus = "active"
+       user.enrolledProjectId = projectID ;
        
     }};
+    
     await user.save();
 
     res.redirect(
-        `${process.env.FRONTEND_URL}/enrollmentsuccess`
+        `${process.env.FRONTEND_URL}/paymentsuccess?reference=${razorpay_payment_id}`
       );
 
-    // res.status(200).json({
-    //     success: true,
-    //     message: `Your enrollment is: ${user.enrollmentStatus}`
+    res.status(200).json({
+        success: true,
+        message: `Your enrollment is: ${user.enrollmentStatus} for project ${user.enrolledProjectId}`
 
-    // });
+    });
 
 });
+
 
 export const enrollMe = catchAsyncError(async(req,res,next)=>{
 
 
     const user = await User.findById(req.user._id);
 
-    if (user.role === "admin")
-      return next(new ErrorHandler("Admin can't buy subscription", 400));
+    // if (user.role === "admin")
+    //   return next(new ErrorHandler("Admin can't buy subscription", 400));
   
 
     const course = await Course.findById(req.params.id).select("-lectures");
@@ -111,15 +124,17 @@ export const enrollMe = catchAsyncError(async(req,res,next)=>{
 
 
 
-
 export const cancelEnrollment = catchAsyncError(async (req, res, next) => {
 
     const user = await User.findById(req.params.id);
     if (!user) return next(new ErrorHandler("User not found", 404));
 
-    if(user.enrollmentStatus === undefined) return next(new ErrorHandler("User is Not Enrolled",400));
+    if(user.enrollmentStatus === undefined && user.enrolledProjectId === undefined) return next(new ErrorHandler("User is Not Enrolled",400));
 
-    if (user.enrollmentStatus === "active" ) user.enrollmentStatus = undefined ;
+    if (user.enrollmentStatus === "active" ){
+        user.enrollmentStatus = undefined;
+        user.enrolledProjectId = undefined;
+    } ;
 
     await user.save();
     res.status(200).json({

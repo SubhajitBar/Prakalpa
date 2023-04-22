@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { catchAsyncError } from "./catchAsyncError.js";
 import { User } from "../models/User.js";
 import ErrorHandler from "../utils/errorHandler.js";
+import { Course } from "../models/Course.js";
 
 
 export const isAuthenticated = catchAsyncError(async (req, res, next) => {
@@ -34,12 +35,21 @@ export const authorizeSubscribers = (req, res, next) => {
   next();
 };
 
-export const authorizeStudent  = (req,res,next)=>{
+export const authorizeStudent  = async(req,res,next)=>{
+  const project = await Course.findById(req.params.id);
 
-  if (req.user.enrollmentStatus !== "active" && req.user.role !== "admin"){
-    return next(new ErrorHandler(`Only enrolled students can acces this resource`, 403));
+  if (req.user.role !== "admin" && req.user.enrolledProjectId !== project.id){
+    return next(new ErrorHandler(`Only enrolled students can access this resource`, 403));
   }
 
   next();
 
 };
+
+// export const isProjectMatched = catchAsyncError(async (req,res,next)=>{
+  
+//   const project = await Course.findById(req.params.id);
+//   if (req.user.enrolledProjectId === project.id){
+//    next();
+//   }
+// });
