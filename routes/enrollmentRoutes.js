@@ -6,7 +6,7 @@ import { cancelEnrollment, createEnrollment, deleteEnrollmentIds, enrollMe, enro
 const router  = express.Router();
 
 // enrollment verify
-router.route("/enrollmentverification/:id").get(isAuthenticated, enrollmentVerification);
+router.route("/enrollmentverification/:id").post(isAuthenticated, enrollmentVerification);
 router.route("/enrollme/:id").get(isAuthenticated, enrollMe);
 
 
