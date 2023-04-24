@@ -13,7 +13,7 @@ export const contact = catchAsyncError(async (req, res, next) => {
 
   const to = process.env.MY_MAIL;
   const subject = "Contact from Prakalpa";
-  const text = `I am ${name} and my Email is ${email}. \n${message}`;
+  const text = `I am ${name} and my Email is ${email}. \nMessage:${message}`;
 
   await sendEmail(to, subject, text);
 

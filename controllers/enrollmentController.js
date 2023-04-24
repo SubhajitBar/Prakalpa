@@ -21,7 +21,7 @@ export const createEnrollment = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: "University Id Added to the Database",
+        message: "Registration Id Added Successfully",
         uIds,
     })
 
@@ -49,13 +49,12 @@ export const deleteEnrollmentIds = catchAsyncError(async (req, res, next) => {
     await uIds.deleteOne();
     res.status(200).json({
         success: true,
-        message: "University Id Removed from Database",
+        message: "Registration Id Removed Successfully",
         
     });
 
 
 });
-
 
 
 
@@ -65,7 +64,7 @@ export const enrollmentVerification = catchAsyncError(async (req, res, next) => 
     const project = await Course.findById(req.params.id);
 
     if (user.role === "admin")
-      return next(new ErrorHandler("Admin can't buy subscription", 400));
+      return next(new ErrorHandler("Admin can't enroll", 400));
 
     if (!project)
     return next(new ErrorHandler("Project not found", 404));
@@ -73,7 +72,7 @@ export const enrollmentVerification = catchAsyncError(async (req, res, next) => 
 
     const regId = await user.enrollmentId;
     const verify = await Enrollment.findOne({ regId });
-    if(!verify) return next(new ErrorHandler("Invalid Registration Id",404));
+    if(!verify) return next(new ErrorHandler("Your University Id is Invalid",404));
 
     if( user.enrollmentStatus === "active" && user.enrolledProjectId !== project.id) return next(new ErrorHandler("You have already enrolled for another project",400));
     else{
@@ -95,12 +94,11 @@ export const enrollmentVerification = catchAsyncError(async (req, res, next) => 
 
     res.status(200).json({
         success: true,
-        message: `Your enrollment is: ${user.enrollmentStatus} for project ${user.enrolledProjectId}`
+        message: `Your have Enrolled Successfully`
 
     });
 
 });
-
 
 export const enrollMe = catchAsyncError(async(req,res,next)=>{
 
