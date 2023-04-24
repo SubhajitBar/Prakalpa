@@ -7,13 +7,12 @@ import ErrorHandler from "../utils/errorHandler.js";
 
 export const createEnrollment = catchAsyncError(async (req, res, next) => {
     const { regId } = req.body;
-    if (!regId) {
-        return next(new ErrorHandler("Please add all filds", 400))
-    };
+    if(!regId)return next(new ErrorHandler("Please enter all filds",400))
     let uIds = await Enrollment.findOne({ regId });
     if (uIds) {
         return next(new ErrorHandler("ID already exists", 409))
     };
+    
 
     uIds = await Enrollment.create({
         regId,
