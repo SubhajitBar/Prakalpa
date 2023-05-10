@@ -22,7 +22,7 @@ router.route("/guide/register").post(singleUpload,guideRegister);
 // guides login 
 router.route("/guide/login").post(guideLogin);
 // logout
-router.route("/logout").get(logout);
+router.route("/guide/logout").get(logout);
 //get my profile
 router.route("/guide/me").get(isGuideAuthenticated,getMyProfile);
 // change password 
