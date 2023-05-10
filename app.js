@@ -29,13 +29,15 @@ import project from "./routes/projectRoutes.js";
 import user from "./routes/userRoutes.js";
 // import payment from "./routes/paymentRoutes.js";
 import other from "./routes/otherRoutes.js";
-import enroll from "./routes/enrollmentRoutes.js"
+import enroll from "./routes/enrollmentRoutes.js";
+import guide from './routes/guideRoutes.js'
 
 app.use("/api", project)
 app.use("/api", user)
 // app.use("/api", payment)
 app.use("/api", other)
 app.use("/api", enroll )
+app.use("/api", guide )
 
 export default app;
 

@@ -48,7 +48,6 @@ export const register = catchAsyncError(async (req, res, next) => {
 
 })
 
-
 export const login = catchAsyncError(async (req, res, next) => {
 
     const { email, password } = req.body;
@@ -171,7 +170,7 @@ export const forgetPassword = catchAsyncError(async (req, res, next) => {
     const url = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
     const message = `Click on the link to reset your password: ${url}. If you have not request then please ignore.`;
 
-    await sendEmail(user.email, "Coursebundler Reset Password", message);
+    await sendEmail(user.email, "Prakalpa Reset Password", message);
 
 
     res.status(200).json({
@@ -214,7 +213,7 @@ export const addToPlaylist = catchAsyncError(async (req, res, next) => {
     const user = await User.findById(req.user._id);
     const course = await Course.findById(req.body.id);
 
-    if (!course) return next(new ErrorHandler("Invalid Course ID", 404))
+    if (!course) return next(new ErrorHandler("Invalid Project ID", 404))
 
     const itemExist = user.playlist.find((item) => {
         if (item.course.toString() === course._id.toString()) return true;
@@ -231,7 +230,7 @@ export const addToPlaylist = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: "Added to playlist",
+        message: "Added to Bookmark",
     });
 
 });
@@ -251,7 +250,7 @@ export const removeFromPlaylist = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: "Removed from playlist",
+        message: "Bookmark Removed",
     });
 
 });
@@ -294,7 +293,7 @@ export const deleteUser = catchAsyncError(async (req, res, next) => {
     if (!user) return next(new ErrorHandler("User not found", 404));
 
     await cloudinary.v2.uploader.destroy(user.avatar.public_id);
-    // Cancel Subscription
+
     await user.deleteOne();
     res.status(200).json({
         success: true,
@@ -309,7 +308,6 @@ export const deleteMyProfile = catchAsyncError(async (req, res, next) => {
 
     await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
-    // Cancel Subscription
     await user.remove();
 
     res.status(200).cookie("token", null, {

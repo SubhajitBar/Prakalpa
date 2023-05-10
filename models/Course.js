@@ -61,6 +61,16 @@ const schema = new mongoose.Schema({
         type: String,
         required: [true, "Enter Course Creator Name"],
     },
+    guide:{
+        type: String,
+        default: undefined,
+    },
+    guideAvatar: {
+        url: {
+            type: String,
+            default: undefined,
+        }
+    },
     createdAt: {
         type: Date,
         default: Date.now,
