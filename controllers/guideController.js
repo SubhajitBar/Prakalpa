@@ -46,7 +46,7 @@ export const removeVerifiedGuide = catchAsyncError(async(req,res,next)=>{
         return next(new ErrorHandler("Employee not found", 404));
     };
 
-    await Guidesdata.deleteOne()
+    await employee.deleteOne()
 
     res.status(200).json({
         success: true,
@@ -436,7 +436,7 @@ export const deleteUser = catchAsyncError(async (req, res, next) => {
     await user.deleteOne();
     res.status(200).json({
         success: true,
-        message: `User Deleted Successfully `,
+        message: `Guide Deleted Successfully `,
     });
 
 });
