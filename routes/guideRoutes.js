@@ -46,7 +46,7 @@ router.route("/guide/removefromplaylist").delete( isGuideAuthenticated, removeFr
 
 //*************Admin***********//
 // Assign guide to project
-router.route("/admin/assignguide").post(isAuthenticated, authorizeAdmin, assignGuide)
+router.route("/admin/assignguide").get(isAuthenticated, authorizeAdmin, assignGuide)
 // Un-Assign guide from project
 router.route("/admin/unassignguide").delete(isAuthenticated, authorizeAdmin, unassignGuide)
 // get all guide 
